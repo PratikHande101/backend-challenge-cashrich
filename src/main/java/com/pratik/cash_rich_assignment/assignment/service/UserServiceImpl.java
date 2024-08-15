@@ -1,8 +1,11 @@
 package com.pratik.cash_rich_assignment.assignment.service;
 
+import com.pratik.cash_rich_assignment.assignment.exception.UnauthorizedAccessException;
 import com.pratik.cash_rich_assignment.assignment.model.User;
 import com.pratik.cash_rich_assignment.assignment.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,12 +13,12 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     // Constructor injection
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = bCryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -45,6 +48,6 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        return Optional.empty();
+        throw new UnauthorizedAccessException("Invalid username or password.");
     }
 }
