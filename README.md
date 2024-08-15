@@ -14,6 +14,7 @@ This project is a backend service that allows users to create and update their p
 ## Tech Stack
 
 - **Spring Boot**
+- **Spring Security**
 - **Hibernate**
 - **MySQL**
 
@@ -23,14 +24,14 @@ This project is a backend service that allows users to create and update their p
     - **URL:** `/signup`
     - **Method:** `POST`
     - **Description:** Registers a new user with basic validation and security.
-    - **Headers:** `cashrich-predefined-header: <value>`
+    - **Headers:** `X-Api-Origin: "cashrich-predefined-header"`
     - **Fields:** `First Name`, `Last Name`, `Email`, `Mobile`, `Username`, `Password`
 
 2. **Login User**
     - **URL:** `/login`
     - **Method:** `POST`
     - **Description:** Authenticates the user using session-based authentication and confirms API origin.
-    - **Headers:** `cashrich-predefined-header: <value>`
+    - **Headers:** `X-Api-Origin: "cashrich-predefined-header"`
     - **Fields:** `Username`, `Password`
 
 3. **Update User Profile**
@@ -42,7 +43,7 @@ This project is a backend service that allows users to create and update their p
 4. **Fetch Coin Data**
     - **URL:** `/coin-data`
     - **Method:** `GET`
-    - **Description:** Fetches cryptocurrency data using the CoinMarketCap API.
+    - **Description:** Fetches cryptocurrency data using the CoinMarketCap API for logged in User and Saves in the DB.
     - **Headers:** `X-CMC_PRO_API_KEY: <Your-API-Key>`
     - **Response:** JSON data of cryptocurrency prices.
 
