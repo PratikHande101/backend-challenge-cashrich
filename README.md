@@ -6,9 +6,9 @@ This project is a backend service that allows users to create and update their p
 
 ## Features
 
-- **User Signup:** Allows users to register with a unique username and email.
+- **User Signup:** Allows users to register with a unique username and email (with validations).
 - **User Login:** Secure login mechanism with session-based authentication.
-- **Profile Management:** Users can update their profile information, including name, email, and mobile number.
+- **Profile Management:** Users can update their profile information, including name, email, password and mobile number.
 - **3rd Party API Integration:** Fetches and stores cryptocurrency data for users based on the provided API key.
 
 ## Tech Stack
