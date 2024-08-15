@@ -1,5 +1,6 @@
 package com.pratik.cash_rich_assignment.assignment.service;
 
+import com.pratik.cash_rich_assignment.assignment.model.CustomUserDetails;
 import com.pratik.cash_rich_assignment.assignment.model.User;
 import com.pratik.cash_rich_assignment.assignment.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +23,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                new ArrayList<>()
-        );
+        return CustomUserDetails.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .build();
     }
 
 }

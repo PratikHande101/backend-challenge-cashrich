@@ -29,6 +29,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Username or email already in use.");
         }
 
+        // validating pass
+        validatePassword(user.getPassword());
         // setting the encrypted password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -51,8 +53,20 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Username already in use.");
         }
 
+        if (user.getPassword() != null) {
+            validatePassword(user.getPassword()); // Validate before encryption
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         // save updated user
         return userRepository.save(user);
+    }
+
+    // pass validator
+    private void validatePassword(String password) {
+        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-\\[\\]{};:'\"\\|,.<>/?`~])[A-Za-z\\d!@#$%^&*()_+=\\-\\[\\]{};:'\"\\|,.<>/?`~]{8,15}$")) {
+            throw new IllegalArgumentException("Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character and be between 8 and 15 characters long");
+        }
     }
 
     @Override

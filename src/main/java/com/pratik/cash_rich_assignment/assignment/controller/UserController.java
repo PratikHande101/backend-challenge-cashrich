@@ -2,7 +2,9 @@ package com.pratik.cash_rich_assignment.assignment.controller;
 
 import com.pratik.cash_rich_assignment.assignment.dto.UserDto;
 import com.pratik.cash_rich_assignment.assignment.dto.UserResponseDto;
+import com.pratik.cash_rich_assignment.assignment.model.CustomUserDetails;
 import com.pratik.cash_rich_assignment.assignment.model.User;
+import com.pratik.cash_rich_assignment.assignment.service.CoinmarketService;
 import com.pratik.cash_rich_assignment.assignment.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,12 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final CoinmarketService coinmarketService;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, CoinmarketService coinmarketService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.coinmarketService = coinmarketService;
     }
 
     @PostMapping("/signup")
@@ -113,5 +117,17 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/coin-data")
+    public ResponseEntity<String> getCoinData() {
+        // getting the current authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getUserId();
+
+        // fetching the coin data from the service
+        String coinData = coinmarketService.getCoinData(userId);
+
+        return ResponseEntity.ok(coinData);
+    }
 
 }
