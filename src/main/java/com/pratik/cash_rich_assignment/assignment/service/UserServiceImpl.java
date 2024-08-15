@@ -1,9 +1,7 @@
 package com.pratik.cash_rich_assignment.assignment.service;
 
-import com.pratik.cash_rich_assignment.assignment.exception.UnauthorizedAccessException;
 import com.pratik.cash_rich_assignment.assignment.model.User;
 import com.pratik.cash_rich_assignment.assignment.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.stereotype.Service;
@@ -38,16 +36,27 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+
     @Override
-    public Optional<User> loginUser(String username, String password) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                return Optional.of(user);
-            }
+    public User updateUser(User user) {
+        // validating email and username
+        Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
+        Optional<User> userByUsername = userRepository.findByUsername(user.getUsername());
+
+        if (userByEmail.isPresent() && !userByEmail.get().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("Email already in use");
         }
 
-        throw new UnauthorizedAccessException("Invalid username or password.");
+        if (userByUsername.isPresent() && !userByUsername.get().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("Username already in use.");
+        }
+
+        // save updated user
+        return userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

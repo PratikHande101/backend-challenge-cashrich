@@ -20,14 +20,4 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(UnauthorizedAccessException.class)
-    public ResponseEntity<Map<String, Object>> handleUnauthorizedAccessException(UnauthorizedAccessException e) {
-        Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("timestamp", LocalDateTime.now());
-        errorDetails.put("message", e.getMessage());
-        errorDetails.put("status", HttpStatus.UNAUTHORIZED.value());
-
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
-    }
 }
