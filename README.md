@@ -14,7 +14,6 @@ This project is a backend service that allows users to create and update their p
 ## Tech Stack
 
 - **Spring Boot**
-- **Spring Security**
 - **Hibernate**
 - **MySQL**
 
